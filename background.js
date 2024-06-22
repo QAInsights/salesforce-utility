@@ -8,13 +8,25 @@ chrome.action.onClicked.addListener(async (tab) => {
     
     const validUrl = validUrls.some((url) => {
       console.log("url", url);
+      console.log("Host", tabs[0]);
+
       return currentUrl.includes(url);
     });
     console.log(validUrl);
 
     if (validUrl) {
+
       console.log("valid url");
-      chrome.tabs.create({ url: tabs[0].url });
+      const urlObj = new URL(tabs[0].url);
+      
+
+      console.log("Host name", urlObj.protocol, urlObj.hostname);
+
+      // setup url https://*.lightning.force.com/lightning/setup/SetupOneHome/home
+      // change to setup url
+      const setupUri = "/lightning/setup/SetupOneHome/home";
+      const setupUrl = urlObj.protocol + "//" + urlObj.hostname + setupUri
+      chrome.tabs.create({ url: setupUrl });
     }
 
     // check for valid salesforce url
