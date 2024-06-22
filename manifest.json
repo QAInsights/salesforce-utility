@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Salesforce Utilities",
+  "version": "1.0",
+  "description": "Changes the URL path and opens it in a new tab.",
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "storage",
+    "downloads"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  },
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  }
+}
