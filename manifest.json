@@ -1,16 +1,22 @@
 {
   "manifest_version": 3,
-  "name": "Salesforce Utilities",
+  "name": "Salesforce Turbo Link",
   "version": "1.0",
-  "description": "Changes the URL path and opens it in a new tab.",
+  "description": "Your quick access to Salesforce",
   "permissions": [
     "tabs",
     "activeTab",
-    "storage",
-    "downloads"
+    "storage"
   ],
   "background": {
     "service_worker": "background.js"
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
   },
   "action": {
     "default_icon": {

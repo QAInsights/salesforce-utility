@@ -1,0 +1,8 @@
+/* Override primary color */
+.btn-primary {
+  background-color: #3333ff;
+}
+
+.text-primary {
+  color: #3333ff !important;
+}
