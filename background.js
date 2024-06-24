@@ -1,4 +1,4 @@
-const validUrls = ["salesforce", "lightning.force"];
+const validUrls = ["salesforce", "lightning.force", "force"];
 
 // called when the user install this extension
 chrome.runtime.onInstalled.addListener(() => {
