@@ -16,27 +16,58 @@
   </head>
   <body>
     <div class="container text-center">
-      <h1 class="text-primary">Salesforce Turbo Link Options</h1>
-      <form class="row g-2" id="options-form">
-        <div class="col-auto">
-          <div class="input-group">
-            <span class="input-group-text" for="setupPage">
-              Salesforce Vanity URL https://*.force.com/</span
-            >
-            <input
-              type="text"
-              id="setupPage"
-              name="setupPage"
-              value="/lightning/setup/SetupOneHome/home"
-              placeholder="/lightning/setup/SetupOneHome/home"
-              class="form-control"
-            />
+      <h1 class="heading">Salesforce Turbo Link Options</h1>
+      <p class="top-content">
+        Salesforce Turbo Link helps in launching the Salesforce page quickly
+        from the toolbar.
+      </p>
+      <br />
+      <p class="top-content">
+        e.g. if you want to navigate to Setup page right from the home page,
+        configure the URI below to navigate quickly from the toolbar.
+      </p>
+      <div class="container">
+        <form
+          class="row g-3 input-group-form form-container"
+          id="options-form"
+          novalidate
+        >
+          <div class="col-auto mb-3">
+            <div class="input-group">
+              <span class="input-group-text" for="setupPage">URI</span>
+              <input
+                type="text"
+                id="setupPage"
+                name="setupPage"
+                value=""
+                placeholder="/lightning/setup/SetupOneHome/home"
+                class="form-control input-group-textbox"
+                maxlength="200"
+                required
+              />
+              <div class="invalid-tooltip" id="invalid-tooltip">
+                Please enter URI.
+              </div>
+            </div>
           </div>
+          <div class="row-auto">
+            <button type="button" id="submitButton" class="btn btn-primary">
+              Save
+            </button>
+            <button type="button" id="resetButton" class="btn btn-secondary">
+              Reset
+            </button>
+          </div>
+        </form>
+        <!-- notification -->
+        <div
+          class="container alert alert-success mt-3"
+          role="alert"
+          id="notification"
+        >
+          Saved successfully!
         </div>
-        <div class="col-auto">
-          <button type="button" class="btn btn-primary">Save</button>
-        </div>
-      </form>
+      </div>
     </div>
 
     <!-- <form id="options-form">
