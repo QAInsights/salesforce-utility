@@ -1,34 +1,73 @@
 const validUrls = ["salesforce", "lightning.force"];
+
+// called when the user install this extension
+chrome.runtime.onInstalled.addListener(() => {
+  // Load options from storage
+  loadDefaultOptions();
+});
+
+// called when the user clicks on the browser action.
 chrome.action.onClicked.addListener(async (tab) => {
   // Send a message to the active tab
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    const currentUrl = tabs[0].url;
-    console.log("message sent");
-    console.log("Current url", currentUrl);
-    
-    const validUrl = validUrls.some((url) => {
-      console.log("url", url);
-      console.log("Host", tabs[0]);
+  chrome.tabs.query(
+    { active: true, currentWindow: true },
+    async function (tabs) {
+      const currentUrl = tabs[0].url;
 
-      return currentUrl.includes(url);
-    });
-    console.log(validUrl);
+      const validUrl = validUrls.some((url) => {
+        return currentUrl.includes(url);
+      });
 
-    if (validUrl) {
+      if (validUrl) {
+        const urlObj = new URL(tabs[0].url);
+        const newUri = await readUri();
 
-      console.log("valid url");
-      const urlObj = new URL(tabs[0].url);
-      
+        const setupUrl =
+          urlObj.protocol + "//" + urlObj.hostname + "/" + newUri;
 
-      console.log("Host name", urlObj.protocol, urlObj.hostname);
-
-      // setup url https://*.lightning.force.com/lightning/setup/SetupOneHome/home
-      // change to setup url
-      const setupUri = "/lightning/setup/SetupOneHome/home";
-      const setupUrl = urlObj.protocol + "//" + urlObj.hostname + setupUri
-      chrome.tabs.create({ url: setupUrl });
+        chrome.tabs.create({ url: setupUrl });
+      }
     }
+  );
+});
 
-    // check for valid salesforce url
+function readUri() {
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.get(["setup"], function (result) {
+      if (result.setup) {
+        resolve(result.setup);
+      } else {
+        reject('No value found for "setup"');
+      }
+    });
   });
+}
+
+async function loadDefaultOptions() {
+  // Set setup page to default
+  const items = await fetch("default.json");
+  const data = await items.json();
+
+  for (const key in data) {
+    const options = data[key];
+    for (const option in options) {
+      const pageName = option;
+      const pageUri = options[option];
+      console.log(pageName, pageUri);
+
+      chrome.storage.local.set({ [pageName]: pageUri }).then(() => {});
+
+      chrome.storage.local.get([pageName], function (result) {});
+    }
+  }
+}
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  if (request.action === "loadDefaultOptions") {
+    // Assuming loadDefaultOptions is a function that returns the default options
+    loadDefaultOptions().then((defaultOption) => {
+      sendResponse({ defaultOption: defaultOption });
+    });
+    return true;
+  }
 });
