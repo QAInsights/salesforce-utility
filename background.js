@@ -1,5 +1,3 @@
-const validUrls = ["salesforce", "lightning.force", "force"];
-
 // called when the user install this extension
 chrome.runtime.onInstalled.addListener(() => {
   // Load options from storage
@@ -14,20 +12,12 @@ chrome.action.onClicked.addListener(async (tab) => {
     async function (tabs) {
       const currentUrl = tabs[0].url;
 
-      const validUrl = validUrls.some((url) => {
-        return currentUrl.includes(url);
-      });
+      const urlObj = new URL(tabs[0].url);
+      const newUri = await readUri();
 
-      if (validUrl) {
-        const urlObj = new URL(tabs[0].url);
-        const newUri = await readUri();
-
-        const setupUrl =
-          urlObj.protocol + "//" + urlObj.hostname + "/" + newUri;
-
-        chrome.tabs.create({ url: setupUrl });
-      }
-    }
+      const setupUrl = urlObj.protocol + "//" + urlObj.hostname + "/" + newUri;
+      chrome.tabs.create({ url: setupUrl });
+    },
   );
 });
 
